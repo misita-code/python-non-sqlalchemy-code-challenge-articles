@@ -25,8 +25,17 @@ class Author:
 
 class Magazine:
     def __init__(self, name, category):
-        self.name = name  # Uses setter validation
-        self.category = category  # Uses setter validation
+        if not isinstance(name, str):
+            self._name = str(name)
+        else:
+            self._name = name
+        if not isinstance(category, str):
+           self._category = str(category)
+        else:
+            self._category = category
+        if len(self._category) == 0:
+            self._category == "uncategorized"
+
 
     @property
     def name(self):
@@ -34,10 +43,10 @@ class Magazine:
 
     @name.setter
     def name(self, value):
-        if isinstance(value, str) and 2 <= len(value) <= 16:
-            self._name = value
-        else:
-            raise ValueError("Name must be a string between 2 and 16 characters")
+        if not isinstance(value, str):
+           return
+        if 2 <= len(value) <=16:
+             self._name = value 
 
     @property
     def category(self):
@@ -45,10 +54,10 @@ class Magazine:
 
     @category.setter
     def category(self, value):
-        if isinstance(value, str) and len(value) > 0:
-            self._category = value
-        else:
-            raise ValueError("Category must be a non-empty string")
+        if not isinstance(value, str) or len(value) > 0:
+            return
+        self._category = value
+       
 
     def articles(self):
         return [article for article in Article.all if article.magazine == self]
@@ -107,4 +116,3 @@ class Article:
             self._magazine = value
         else:
             raise ValueError("Magazine must be an instance of Magazine")
-
